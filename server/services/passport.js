@@ -18,7 +18,7 @@ passport.serializeUser((user, done) => {
 //becomes a user model instance added to req object as 'req.user'
 passport.deserializeUser((id, done) => {
     User.findById(id)
-        .then( user => {
+        .then(user => {
             done(null, user);
         });
 });
@@ -28,26 +28,38 @@ passport.deserializeUser((id, done) => {
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/callback'
+    callbackURL: '/auth/google/callback',
+    //to tell passsport to trust the proxy that comes through (in this case, from heroku)
+    proxy: true
 },
-    (accessToken, refreshToken, profile, done) => {
-        //console.log(accessToken, 'access token');
-        //console.log(refreshToken, 'refresh token');
-        //console.log(profile, 'profile');
+    //(accessToken, refreshToken, profile, done) => {
+    //    //console.log(accessToken, 'access token');
+    //    //console.log(refreshToken, 'refresh token');
+    //    //console.log(profile, 'profile');
 
-        //find if user already exists
-        User.findOne({ googleId: profile.id })
-            .then((existingUser) => {
-                if (existingUser) {
-                    //"Done" lets passport know auth is completed, with "null" means no error and user record as "existingUser"
-                    done(null, existingUser);
-                } else {
-                    //create new user
-                    new User({ googleId: profile.id })
-                        .save()
-                        .then((user) => done(null, user));
-                }
-            });
+    //    //find if user already exists
+    //    User.findOne({ googleId: profile.id })
+    //        .then((existingUser) => {
+    //            if (existingUser) {
+    //                //"Done" lets passport know auth is completed, with "null" means no error and user record as "existingUser"
+    //                done(null, existingUser);
+    //            } else {
+    //                //create new user
+    //                new User({ googleId: profile.id })
+    //                    .save()
+    //                    .then((user) => done(null, user));
+    //            }
+    //        });
+    //})
+
+    //refactored
+    async (accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({ googleId: profile.id });
+        if (existingUser) {
+            return done(null, existingUser);
+        }
+        const user = await new User({ googleId: profile.id }).save();
+        done(null, user);
     })
 );
 
