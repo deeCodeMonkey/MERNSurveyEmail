@@ -7,13 +7,19 @@ module.exports = app => {
         scope: ['profile', 'email']
     }));
 
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    //passport is middleware
+    app.get('/auth/google/callback', passport.authenticate('google'),
+        (req, res) => {
+            res.redirect('/surveys');
+        }
+    );
 
     app.get('/api/logout', (req, res) => {
         //passport also provides/attaches req.logout
         req.logout();
         //should be blank
-        res.send('user: ' + req.user);
+        //res.send('user: ' + req.user);
+        res.redirect('/');
     });
 
     app.get('/api/current_user', (req, res) => {
