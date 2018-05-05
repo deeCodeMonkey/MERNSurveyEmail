@@ -1,5 +1,8 @@
 ﻿const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
+const Mailer = require('../services/Mailer');
+const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
+
 //mongo access setup conducive for testing, instead of direct link to Survey model file
 const mongoose = require('mongoose');
 const Survey = mongoose.model('surveys');
@@ -20,6 +23,10 @@ module.exports = app => {
             //assume creation date is also sent date
             dateSent: Date.now()
         });
+
+        //create sengrid mailer and send email
+        const mailer = new Mailer(survey, surveyTemplate(survey));
+
 
     });
 };
