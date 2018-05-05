@@ -56,7 +56,7 @@ class Mailer extends helper.Mail {
     //api requests are always asynchronous
     async send() {
         //get all data, convert to JSON, then send to Sendgrid per Sengrid code
-        const request = this.sgApi.emptyRequest({
+        const request = await this.sgApi.emptyRequest({
             method: 'POST',
             path: '/v3/mail/send',
             body: this.toJSON()

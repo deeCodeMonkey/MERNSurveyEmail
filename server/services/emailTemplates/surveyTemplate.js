@@ -1,6 +1,8 @@
-﻿module.exports = (survey) => {
+﻿const keys = require('../../config/keys');
 
-    //Sendgrid identifies the recipients and their activity from emails. Webhooks from Sendgrid give us updates on the recipients
+module.exports = (survey) => {
+
+    //Sendgrid identifies the recipients and their activity from emails (by hacking the href attribute). Webhooks from Sendgrid give us updates on the recipients
     return `
 
         <html>
@@ -10,10 +12,10 @@
                     <p>Please enter the following question:</p>
                     <p>${survey.body}</p>
                     <div>
-                        <a href="http://localhost:3000">Yes<a/>
+                        <a href="${keys.redirectDomain}/api/surveys/thanks">Yes<a/>
                     </div>
                     <div>
-                        <a href="http://localhost:3000">No<a/>
+                        <a href="${keys.redirectDomain}/api/surveys/thanks">No<a/>
                     </div>
                 </div>
             </body>

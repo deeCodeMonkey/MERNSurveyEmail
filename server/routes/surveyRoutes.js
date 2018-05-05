@@ -8,9 +8,14 @@ const mongoose = require('mongoose');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
+
+    app.get('/api/surveys/thanks', (req, res) => {
+        res.send('Thank you for your feedback!');
+    });
+
     //create new survey and send out email to recipients
     //ensure user is logged in and has enough credits to create survey
-    app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+    app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
 
         const { title, subject, body, recipients } = req.body;
         const survey = new Survey({
@@ -24,9 +29,18 @@ module.exports = app => {
             dateSent: Date.now()
         });
 
-        //create sengrid mailer and send email
-        const mailer = new Mailer(survey, surveyTemplate(survey));
-        mailer.send();
+        try {
+            //create sengrid mailer and send email
+            const mailer = new Mailer(survey, surveyTemplate(survey));
+            await mailer.send();
+            await survey.save();
+            req.user.credits -= 1;
+            const user = await req.user.save();
+
+            res.send(user);
+        } catch (err) {
+            res.status(422).send(err);
+        }
 
     });
 };

@@ -6,5 +6,6 @@
     cookieKey2: process.env.COOKIE_KEY_2,
     stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     stripesecretKey: process.env.STRIPE_SECRET_KEY,
-    sendgridKey: process.env.SENDGRID_KEY
+    sendgridKey: process.env.SENDGRID_KEY,
+    redirectDomain: process.env.REDIRECT_DOMAIN
 };
