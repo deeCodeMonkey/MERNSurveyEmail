@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'production') {
     //Express to serve up production assets like main.js or main.css file in the React build folder
     //if cannot find route, look in client-build (a React-Router page)
     app.use(express.static('client/build'));
-    //Express will serve up index.html if it doesn't recognize the route (default to index.hmtml)
+    //Express will serve up index.html if it doesn't recognize the route (default to index.html)
     const path = require('path');
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
