@@ -10,6 +10,7 @@ class Mailer extends helper.Mail {
         //inherit constructor from Mail class
         super();
 
+        this.sgApi = sendgrid(keys.sendgridKey);
         //assign and format data 
         this.from_email = new helper.Email('no-reply@emaily.com');
         this.subject = subject;
@@ -50,6 +51,18 @@ class Mailer extends helper.Mail {
             personalize.addTo(recipient)
         });
         this.addPersonalization(personalize);
+    }
+
+    //api requests are always asynchronous
+    async send() {
+        //get all data, convert to JSON, then send to Sendgrid per Sengrid code
+        const request = this.sgApi.emptyRequest({
+            method: 'POST',
+            path: '/v3/mail/send',
+            body: this.toJSON()
+        });
+        const response = this.sgApi.API(request);
+        return response;
     }
 }
 

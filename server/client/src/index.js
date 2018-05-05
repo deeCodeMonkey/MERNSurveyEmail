@@ -10,6 +10,10 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
+//If want to use axios to test api instead of Postman. This method will account for user auth with cookies. Enter commands on browser console. 
+import axios from 'axios';
+window.axios = axios;
+
 //(reducer, {relates to server side rendering})
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 

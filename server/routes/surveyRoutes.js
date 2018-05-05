@@ -26,7 +26,7 @@ module.exports = app => {
 
         //create sengrid mailer and send email
         const mailer = new Mailer(survey, surveyTemplate(survey));
-
+        mailer.send();
 
     });
 };
