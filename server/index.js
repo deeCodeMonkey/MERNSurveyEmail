@@ -5,6 +5,10 @@ const keys = require('./config/keys');
 const express = require('express');
 const app = express();
 
+const bodyParser = require('body-parser');
+//for put/post/patch req, parse then assign to req.body property
+app.use(bodyParser.json());
+
 const mongoose = require('mongoose');
 mongoose.connect(keys.mongoURI);
 require('./models/User');
@@ -12,6 +16,7 @@ require('./models/User');
 //set up cookie for authentication
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+//middlewware used for all routes
 //get express to use cookies
 app.use(
     cookieSession({
@@ -30,6 +35,7 @@ app.use(passport.session());
 require('./services/passport');
 //require statement returns module.export function, which is immediately called with app argument. Thus, the route is hooked up with index
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 
 

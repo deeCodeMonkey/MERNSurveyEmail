@@ -1,0 +1,10 @@
+﻿//next = pass req off to next middleware
+//this middleware (requires use as loggedin) only used for certain routes
+module.exports = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).send({ error: 'You must log in.'});
+    }
+    next();
+
+
+};

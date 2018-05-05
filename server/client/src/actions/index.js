@@ -17,3 +17,9 @@ export const fetchUser = () => async dispatch => {
     dispatch({ type: FETCH_USER, payload: res.data });
 };
 
+export const handleToken = (token) => async dispatch => {
+    //post token to backend server
+    const res = await axios.post('/api/stripe', token);
+    //return updated user model
+    dispatch({ type: FETCH_USER, payload: res.data });
+}

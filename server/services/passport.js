@@ -15,7 +15,7 @@ passport.serializeUser((user, done) => {
 
 //get unique user id (de-encrypt) from cookie
 //turn cookie id to mongoose id
-//becomes a user model instance added to req object as 'req.user'
+//becomes a user model instance added to req object as 'req.user'****************
 passport.deserializeUser((id, done) => {
     User.findById(id)
         .then(user => {

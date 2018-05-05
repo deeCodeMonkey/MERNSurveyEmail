@@ -27,6 +27,7 @@ module.exports = app => {
         //res.send(req.session)
 
         //route handler to test and see if user is present
+        //passport assigns the user model to the request. req.user = user model
         res.send(req.user);
     });
 
