@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 const mongoose = require('mongoose');
 mongoose.connect(keys.mongoURI);
 require('./models/User');
+require('./models/Survey');
 
 //set up cookie for authentication
 const cookieSession = require('cookie-session');
@@ -30,11 +31,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-//run file
+
+
+//run files
 require('./services/passport');
-//require statement returns module.export function, which is immediately called with app argument. Thus, the route is hooked up with index
+//require statement returns module.export function, which is immediately called with (app) argument/object. Thus, the route is hooked up with index
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
+
+
+
+
 
 
 //heroku production setting
@@ -45,10 +53,10 @@ if (process.env.NODE_ENV === 'production') {
     //Express will serve up index.html if it doesn't recognize the route (default to index.html)
     const path = require('path');
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-    })
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
 }
 
-
+//dynamic port (i.e. port on Heroku)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
