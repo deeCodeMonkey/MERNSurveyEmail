@@ -26,4 +26,5 @@ class Payments extends Component {
     }
 }
 
+//no mapStateToProps, just getting access to actions
 export default connect(null, actions)(Payments);
