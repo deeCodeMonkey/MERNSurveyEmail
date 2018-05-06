@@ -53,10 +53,10 @@ class SurveyForm extends Component {
     }
 };
 
-//values object has name and value of each input field
+//'values' object has name and value of each input field
 function validate(values) {
     const errors = {};
-
+    
     errors.emails = validateEmails(values.emails || '');
 
     _.each(FIELDS, ({ name, noValueError }) => {
